@@ -1,0 +1,129 @@
+inicia o banco 
+
+psql --username=freecodecamp --dbname=postgres
+
+
+Para listar os bancos use 
+/l 
+
+
+Cria um banco de dados 
+
+CREATE DATABASE nome_bancoDeDados; 
+
+Para se conectar a um DATABASE especifico, use 
+\c nome_bancoDeDados
+
+
+Para criar uma tabela 
+
+CREATE TABLE nome_tabela();
+
+
+Para visualizar as tabelas criadas, use
+
+\d 
+
+para visualizar uma tabela em especifico use 
+
+\d nome_tabela
+
+para criar uma coluna em uma tabela já criada
+ALTER TABLE second_table ADD COLUMN first_column INT;
+
+
+Para deletar uma coluna especifica. 
+ALTER TABLE table_name DROP COLUMN column_name;
+
+
+Para renomear uma coluna use 
+ALTER TABLE table_name RENAME COLUMN column_name TO new_name; 
+
+Para inserir registros use
+INSERT INTO table_name(column_1, column_2) VALUES(value1, value2);
+
+para deletar registros 
+DELETE FROM table_name WHERE column_name = 'registro';
+
+
+para deletar uma tabela use 
+DROP TABLE table_name;
+
+Para alterar o nome de um banco de dados (database)
+ALTER DATABASE nome_bancoDeDados RENAME TO nome_preferivel;
+
+Para apagar um database
+DROP DATABASE nome_bancoDeDados;
+
+No postgres vc pode definir uma coluna id com o tipo SERIAL que vai fazer ele ser INT NOT AUTO_INCREMENT 
+
+
+Para atualizar o registro de uma tabela 
+UPDATE nome_tabela SET coluna_para_atualizar='Novo valor do registro' WHERE condição pra se chegar nesse registro;
+
+
+Para transformar uma coluna que já existe em primary key 
+ALTER TABLE nome_tabela ADD PRIMARY KEY(nome_coluna);
+
+Para remover a restrição de PK de uma coluna use 
+ALTER TABLE nome_tabela DROP CONSTRAINT nome_tabela_pkey;
+
+obs: esse nome "nome_tabela_pkey" foi gerado automaticamente quando definimos uma PK, vc pode visualizar esse nome no rodapé do retorno do comando \d nome_tabela;
+
+
+obs: sempre que criamos alguma coluna com o SERIAL parace tipo uma tabela nova no banco, mas ele serve somente pra incrementar os ids
+
+
+Para criarmos uma FK (foreign key) em uma tabela usamos o seguinte comando
+ALTER TABLE tabela_atual ADD COLUMN colunaParaFK INT REFERENCES nome_tabela_da_pk(coluna_da_pk)
+
+obs: 
+em "colunaParaFK" é interessante ter o nome da PK que vamos referenciar, na tabela teremos esse nome referenciado a PK, isto é, nossa FK tem o nome da PK da tabela referenciada.
+
+
+No caso em questão temos uma tabela characters onde se encotra uma fk e a tabela more_info onde deve se encontrar a FK, queremos que a relação seja one-to-one, vamos reforçar esse comportamento transformando a coluna da FK em UNIQUE para que ninguém mais possa ter o id em outro registro da tabela (provavelmente as FKS quando definidas tem um comportamnto automatico de one-to-many), use o comando 
+
+ALTER TABLE table_name ADD UNIQUE(nome_coluna);
+
+
+Por algum motivo ao definirmos a PK ele n atribui NOT NULL, por isso precisamos fazer isso manualmente, com o seguinte comando 
+
+ALTER TABLE nome_tabela ALTER COLUMN nome_coluna_FK SET NOT NULL;  
+
+
+
+Para alterar o nome da coluna 
+
+ALTER TABLE nome_tabela RENAME COLUMN nome_coluna TO nome_coluna_atualizado;
+
+
+Para adicionar uma FK chave estrangeira a uma coluna existente
+ALTER TABLE nome_tabela ADD FOREIGN KEY(nome_coluna_existente) REFERENCES nome_tabela_da_pk(coluna_da_pk);
+
+
+
+Por algum motivo no relacionamento many-to-many por eu ter uma tabela intermediária, vc deve (ou pode n sei kkk) transformar duas colunas como chaves primarias compostas. 
+
+ALTER TABLE nome_tabela_intermediaria ADD PRIMARY KEY (nome_coluna1, nome_coluna2); 
+
+Dessa forma como temos duas colunas representando uma PK os seus valores representam se "concatenam" e forma uma chave primaria, assim n teremos valores repetidos nos dois campos, dessa forma será identificado cada linha excluisivamente
+
+coluna1 | coluna2
+  x     |    a        => PK = x + a
+        |
+        |
+        |
+
+
+
+Para visualizar as tabelas que estão conectadas atraves de PK e FK (one-to-many), use 
+
+SELECT * FROM tabela_principal FULL JOIN tabela_secundária ON tabela_principal.nome_coluna_pk = tabela_secundária.nome_coluna_FK; 
+
+
+Para visualiar as tabelas que estão conecatadas como many-to-many, use 
+
+SELECT * FROM tabela_principal FULL JOIN tabela_secundária ON tabela_principal.coluna_da_pk = tabela_secundária.coluna_da_fk FULL JOIN tabela_intermediaria ON tabela_principal.coluna_da_pk = tabela_intermediaria.coluna_da_fk;
+
+
+

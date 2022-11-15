@@ -1,0 +1,9 @@
+
+se eu sair sem salvar talvez isso ajude a trazer de volta
+pg_dump -cC --inserts -U freecodecamp universe > universe.sql
+
+talvez esse cmd ajude tambem 
+psql -U postgres < universe.sql
+
+para entrar no banco use 
+psql --username=freecodecamp --dbname=postgres
