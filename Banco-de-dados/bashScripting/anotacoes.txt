@@ -1,0 +1,133 @@
+para executar um arquivo .sh use
+sh nomedoarquivo.sh
+
+ou vc pode usar 
+bash nomedoarquivo.sh
+
+
+O interpretador do bash fica localizado geralmente em /usr/bin/bash, se tiver duvidas use o comando which bash pra descobrir o caminho
+
+Geralmente setamos o caminho para o interpretador dentro do arquivo .sh usando 
+#!<caminho>
+
+dessa forma ao executar o caminho do arquivo ele saberá que se deve utilizar o interpretador correto
+
+Pode ser que vc n tenha permissão de executar o arquivo, se vc executar ls -l verá as permissões do arquivo 
+As permissões são divididas em 
+R -> Ler
+W -> Escrever
+x -> Executar
+
+Se vc quiser dar permissão para execução de um arquivo, use 
+chmod +x nomedoarquivo.sh
+
+Dessa forma vc consegue executar os comandos que estão dentro do script
+
+Você pode adicionar variaveis com o sinal de = (caso tenha espaços utilize aspas)
+Para ler uma variavel vc pode usar o sinal de $ na frente
+ex: echo %variavel
+
+
+Se vc quiser ler o input de um usuario use read e a variavel que vai armazer o input. Ex: 
+read NAME  
+
+Para mostrar o conteudo de uma variavel vc pode usar (n se esqueça do ponto)
+echo Hello $NAME.
+
+
+De alguma forma se utilizar argumentos passado atraves do seguinte comando: 
+echo $* 
+ent se vc passar ./nomedoarquivo.sh arg1 ele sera printado na tela 
+
+Voce pode acessar os argumentos com números como se fossem indices 
+echo $1 #isso printará o primeiro argumento
+
+voce pode usar condicionais com a seguinte sintaxe 
+
+if [[ $1 == arg1 ]]
+then 
+  echo true
+else 
+  echo false 
+fi
+
+Para operadores relacionais vc pode fazer uso das seguintes palavras reservadas
+-eq -> equal (igual) 
+-ne -> not equal (diferente)
+-lt -> less than (menor que)
+-le -> less than or equal(menor que ou igual)
+-gt -> greater than (maior que)
+-ge -> greater than or equal (maior ou igual )
+
+
+Parece que é possivel faze a mesma coisa com operadores relacionais 
+
+-eq -> equal (igual) ->  ==
+-ne -> not equal (diferente) -> != 
+-lt -> less than (menor que) -> <
+-le -> less than or equal(menor que ou igual) -> nesse caso precisa usar o operador lógico or [[ $1 < 5  || $1 == 5 ]]
+-gt -> greater than (maior que) -> > 
+-ge -> greater than or equal (maior ou igual ) -> nesse caso precisa usar o operador lógico or [[ $1 > 5  || $1 == 5 ]]
+
+
+Por algum caralho true é igual a 0 e false é igual a 1, veja este exemplo, execute isso diretamente no terminal
+
+[[ 4 -ge 5 ]]; echo $?
+
+isto é, 4 é maior ou igual a 5? false, ent o retorno é 1 
+
+Quando há mensagem de erro é retornado algo diferente de 0 ou 1, 
+nesse exemplo eu passo um comando que não existe 
+
+bad_command; echo $? 
+
+e é retornado 127 
+
+se vc passar um comando que exista será retorando 0
+
+se vc usar o comando help test poderá verificar a sintaxe usada para verificar algumas coiasas, umas dela é verificar se o arquivo existe com -a 
+
+[[ -a bad_file.txt ]]; echo $?
+
+ou verificar as permissoes com -x 
+
+[[ -x countdown.sh ]]; echo $?
+
+podemos verificar com o comando help [[ as expressões lógicas 
+
+
+Eu ainda posso utilizar os operadores lógicos como foi dito antes, esse caso ele verifica se eu tenho permissão pra executar esse arquivo e se 5 é menor ou igual a 4
+
+[[ -x countdown.sh  && 5 -le 4 ]]; echo $?
+
+
+
+É possivel trabalhar com dois tipos de iterações, a primeira tem a seguinte sintaxe: 
+
+for (( i = 10; i > 0; i-- ))
+do
+  echo $i
+done
+
+
+o outro tipo de iteração é o while, a sintaxe dele é a seguinte 
+while [[ CONDITION ]]
+do
+  STATEMENTS
+done
+
+Exemplo 
+
+while [[ $I -ge 0 ]]
+  do
+    echo $I
+    ((I--))
+    sleep 1
+  done
+
+
+o comentario de multiplas linhas é assim 
+: ' 
+conteudo 
+mais conteudo comentado
+'
