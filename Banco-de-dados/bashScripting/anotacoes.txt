@@ -131,3 +131,48 @@ o comentario de multiplas linhas é assim
 conteudo 
 mais conteudo comentado
 '
+
+
+é possivel visualizar as variaveis de ambientes do shel com o comando printenv, também é possivel visualizar com declare -p
+
+
+Use (( operacao )) para fazer calculos matematicos, se vc colocar $ na frente será retornado o valor do cálculo
+
+Sintaxe de array 
+ARR=("a" "b" "c")
+
+Para acessar os elementos do array, use nomeArray[indice] 
+no caso do bash o array começa em 0 também, caso queira printar use ${ARR[1]}
+vc pode utilizar @ ou * no lugar do indice para pegar todos os elementos do array 
+vc pode observar os indices do seu array com o comando declare -p nomeArray
+
+
+A sintaxe para definir uma função é a seguinte 
+FUNCTION_NAME() {
+  STATEMENTS
+}
+
+Para chamar uma função apenas escreva o nome dela, FUNCTION_NAME
+vc pode passar argumentos assim FUNCTION_NAME ARGUMENTO1
+
+
+Só pra lembra, caso queira testar alguma operacao diretamente no terminal use algo assim (0 = true, 1= false )
+[[ hello == hello ]]; echo $?
+
+Existe um operador =~ que é usado pra verificar se existe algum elemento dentro dele 
+[[ hello =~ el ]]; echo $? 
+
+saida é 0 
+
+verifica se existe "lo wor" dentro de helo world
+[[ "hello world" =~ "lo wor" ]]; echo $?
+
+vc também pode verificar usado expressões regulares, este verifica se começa com h
+[[ "hello world" =~ ^h ]]; echo $?
+
+verifica se começa com h e termina com d
+
+[[ "hello world" =~ ^h.+d$ ]]; echo $?
+
+esse verifica se o ultimo caracter é o sinal de interrogação 
+[[ $VAR =~ \?$ ]]; echo $?
